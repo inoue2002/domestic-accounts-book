@@ -3,7 +3,7 @@
 import { initializeApp } from 'firebase/app';
 
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,7 +14,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
-console.log({ firebaseConfig });
 
 //initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
