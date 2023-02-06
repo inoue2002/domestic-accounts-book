@@ -1,5 +1,8 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -8,7 +11,7 @@ import { auth } from '../firebase';
 import googleSiginImage from '../assets/images/btn_google_signin_light_normal_web.png';
 
 const Signin = () => {
-  const [user] = useAuthState(auth);
+  const [user,loading,error] = useAuthState(auth);
 
   const signInWithGoogle = () => {
     // Googleプロバイダオブジェクトのインスタンスを作成
@@ -22,6 +25,18 @@ const Signin = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+
+        // TODO - useFirestoreに移動する
+        // DBにユーザー情報が登録されているかどうか確認する
+        const userDocumentRef = doc(db, 'users', user.uid);
+        getDoc(userDocumentRef).then(async (documentSnapshot) => {
+          // まだ登録されていない場合は新しく追加する
+          if (!documentSnapshot.exists()) {
+            await setDoc(userDocumentRef, {
+              eventId: [],
+            });
+          }
+        });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -37,7 +52,7 @@ const Signin = () => {
 
   return (
     <div>
-      {!user ? (
+      {!user && !loading ? (
         <div className="flex justify-center items-center h-[90vh]">
           <div className="signin_button">
             <img src={googleSiginImage} onClick={() => signInWithGoogle()} alt="google signin" />
