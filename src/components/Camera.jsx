@@ -79,7 +79,7 @@ const Camera = (props) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20">
+    <div className="flex flex-col justify-center items-center mt-10">
       <div class="flex items-center justify-center w-full">
         {preview !== undefined ? (
           <div className="relative">
