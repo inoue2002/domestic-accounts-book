@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { createEvent } from '../useFirestore';
+import { createEvent, getEvent, joinEvent } from '../useFirestore';
 
 const Home = () => {
   // ユーザーのDBを確認しに行って、それぞれのイベントへのパスを生成する
@@ -18,7 +18,7 @@ const Home = () => {
     if (userJoinEvent.length !== 0) return;
     const userRef = doc(db, 'users', user.uid);
     getDoc(userRef).then((user) => {
-      setUserJoinEvent(user.data().eventId);
+      setUserJoinEvent(user.data().join);
     });
     setLoading(false);
   }, [user, userJoinEvent.length]);
@@ -27,6 +27,7 @@ const Home = () => {
     try {
       // DBにイベントを作成
       const eventId = await createEvent(user.uid);
+      joinEvent(user.uid, eventId);
       // イベントページに遷移する
       navigate(`/event/${eventId}`);
     } catch (e) {
@@ -35,15 +36,25 @@ const Home = () => {
     }
   };
 
-  const joinEvent = () => {
+  const join = async () => {
     console.log('イベントに参加します', inputEventId);
     // dbにイベントがあるか確認しに行く
     //　イベントがあった場合ユーザー情報のjoinEventにeventIDを追加
     // イベントのmemberにuserIdを追加
     // イベントページに遷移
-
-    // イベント情報がない場合はエラーメッセージを出す
-    // inputEventIdを初期値に戻す
+    try {
+      const targetEvent = await getEvent(inputEventId);
+      if (targetEvent == null) {
+        setInputEventId('');
+      }
+      joinEvent(user.uid, inputEventId);
+      navigate(`/event/${inputEventId}`);
+    } catch (e) {
+      console.log(e);
+      // イベント情報がない場合はエラーメッセージを出す
+      // inputEventIdを初期値に戻す
+      setInputEventId('');
+    }
   };
 
   return (
@@ -76,7 +87,7 @@ const Home = () => {
           value={inputEventId}
           onChange={(event) => setInputEventId(event.target.value)}
         />
-        <button className="ml-4" onClick={() => joinEvent()}>
+        <button className="ml-4" onClick={() => join()}>
           決定
         </button>
       </div>
