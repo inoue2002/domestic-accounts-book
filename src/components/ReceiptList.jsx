@@ -41,14 +41,15 @@ const ReceiptList = (props) => {
   //   });
 
   return (
-    <div>
-      <div>レシートリスト</div>
-      <div>
-        {/* {receiptList.map((item, i) => (
-         
-        ))} */}
-        {receiptList.map((todo, index) => (
-          <img src={todo.imageUrl} alt="" key={index}  className='w-10 h-10'/>
+    <div className="flex flex-col justify-start">
+      <div className="flex w-full justify-start">
+        <div className="p-5 font-bold">レシートリスト</div>
+      </div>
+      <div className="p-5 flex justify-center flex-col items-center">
+        {receiptList.map((receipt, index) => (
+          <div className="w-11/12 h-20 border border-l-neutral-500 flex justify-start items-center pl-3">
+            <img src={receipt.imageUrl} alt="" key={index} className="w-10 h-10" />
+          </div>
         ))}
       </div>
     </div>
