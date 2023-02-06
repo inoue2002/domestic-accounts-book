@@ -1,6 +1,6 @@
 // firestoreまわりの処理をまとめてここに書く
 
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 /**
@@ -36,7 +36,17 @@ export async function addReceiptd(eventId,receipt){
     return response
    }
    catch(e){
-    console.log(e)
     throw new Error(e)
    }
+}
+
+export async function getUser(uid){
+  const userRef = doc(db,'users',uid)
+  try{
+    const response = await getDoc(userRef)
+    console.log(response.data())
+    return response.data()
+  }catch(e){
+    throw new Error(e)
+  }
 }

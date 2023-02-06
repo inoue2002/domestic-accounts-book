@@ -9,6 +9,9 @@ import { doc, getDoc } from 'firebase/firestore';
 import { Link, useParams } from 'react-router-dom';
 import Camera from './Camera';
 
+import { getUser } from '../useFirestore';
+import ReceiptList from './ReceiptList';
+
 // イベントがある場合は、dbのrecentEventIdを該当のeventIDに書き換える
 
 // ホームに戻る
@@ -22,34 +25,46 @@ const Event = () => {
   const [user] = useAuthState(auth);
   const { eventId } = useParams();
   const [eventState, setEventState] = useState({});
+  const [hostUser, setHostUser] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     console.log('起動');
     if (!user) return;
     try {
       const eventRef = doc(db, 'events', eventId);
-      getDoc(eventRef).then((event) => {
+      getDoc(eventRef).then(async (event) => {
         console.log(event.data());
         setEventState(event.data());
+        const hostUser = await getUser(eventState.host);
+        setHostUser(hostUser);
+        console.log(hostUser);
       });
       setLoading(false);
     } catch (e) {
       return;
     }
-  }, [eventId, user]);
+  }, [eventId, eventState.host, user]);
   // 最近のレシートの投稿が見れる
 
   return (
     <div>
-      <div>イベントページ</div>
-      {eventState ? (
-        `イベントがありました${eventState.host}`
-      ) : (
+      {!eventState ? (
         <div>
           イベントが見つかりませんでした。<Link to="/">ホームに戻る</Link>
         </div>
+      ) : (
+        ''
       )}
+      {/* {eventState && hostUser ? (
+        <div>
+          <div>ホストユーザー</div>
+          <img src={hostUser.imageUrl} alt=""  className='rounded-full w-10 h-10'/>
+        </div>
+      ) : (
+        ''
+      )} */}
       <Camera eventId={eventId} />
+      <ReceiptList eventId={eventId} />
     </div>
   );
 };

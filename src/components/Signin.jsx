@@ -11,7 +11,7 @@ import { auth } from '../firebase';
 import googleSiginImage from '../assets/images/btn_google_signin_light_normal_web.png';
 
 const Signin = () => {
-  const [user,loading,error] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
   const signInWithGoogle = () => {
     // Googleプロバイダオブジェクトのインスタンスを作成
@@ -34,6 +34,7 @@ const Signin = () => {
           if (!documentSnapshot.exists()) {
             await setDoc(userDocumentRef, {
               eventId: [],
+              imageUrl: user.photoURL,
             });
           }
         });
