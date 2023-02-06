@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase';
 
+import { AiFillHome } from 'react-icons/ai';
+
 import { doc, getDoc } from 'firebase/firestore';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Camera from './Camera';
 
 import { getUser } from '../useFirestore';
@@ -14,13 +16,12 @@ import ReceiptList from './ReceiptList';
 
 // イベントがある場合は、dbのrecentEventIdを該当のeventIDに書き換える
 
-// ホームに戻る
-
 // 家計簿から退出する
 
 // イベントの削除（）
 
 const Event = () => {
+  const navigate = useNavigate();
   // カメラ
   const [user] = useAuthState(auth);
   const { eventId } = useParams();
@@ -63,6 +64,15 @@ const Event = () => {
       ) : (
         ''
       )} */}
+      <div className="p-5">
+        <div
+          className="flex items-center justify-center border border-l-neutral-500 rounded-md w-40 h-12"
+          onClick={() => navigate('/')}
+        >
+          <AiFillHome />
+          <div className="ml-2">ホームに戻る</div>
+        </div>
+      </div>
       <Camera eventId={eventId} />
       <ReceiptList eventId={eventId} />
     </div>
