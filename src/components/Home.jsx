@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { createEvent, getEvent, joinEvent } from '../useFirestore';
 import Header from './Header';
+import Signin from './Signin';
 
 const Home = () => {
   // ユーザーのDBを確認しに行って、それぞれのイベントへのパスを生成する
@@ -61,13 +62,13 @@ const Home = () => {
     <>
       <Header />
       <div className="flex flex-col justify-start items-start">
-        {userJoinEvent.length !== 0 ? <div className="m-4 flex">参加している家計簿</div> : ''}
-        {!loading && userJoinEvent.length === 0 ? (
+        {user && userJoinEvent.length !== 0 ? <div className="m-4 flex">参加している家計簿</div> : ''}
+        {user && !loading && userJoinEvent.length === 0 ? (
           <div className="m-6">まだ参加している家計簿はありません。新しく作るか、友達に招待してもらいましょう。</div>
         ) : (
           ''
         )}
-        {userJoinEvent.length !== 0 ? (
+        {user && userJoinEvent.length !== 0 ? (
           <div className="ml-4">
             {userJoinEvent.map((val) => (
               <li className="list-none" key={val} onClick={() => navigate(`event/${val}`)}>
@@ -78,21 +79,33 @@ const Home = () => {
         ) : (
           ''
         )}
-        <div className="m-4 flex bg-red-400" onClick={() => newEvent()}>
-          新しい家計簿を作成
-        </div>
-        <div className="m-4  flex">友達の家計簿に参加する</div>
-        <div className="m-4">
-          <input
-            type="text"
-            className="border border-l-sky-300"
-            value={inputEventId}
-            onChange={(event) => setInputEventId(event.target.value)}
-          />
-          <button className="ml-4" onClick={() => join()}>
-            決定
-          </button>
-        </div>
+        {user ? (
+          <div className="m-4 flex bg-red-400" onClick={() => newEvent()}>
+            新しい家計簿を作成
+          </div>
+        ) : (
+          ''
+        )}
+        {user ? <div className="m-4  flex">友達の家計簿に参加する</div> : ''}
+        {user ? (
+          <div className="m-4">
+            <input
+              type="text"
+              className="border border-l-sky-300"
+              value={inputEventId}
+              onChange={(event) => setInputEventId(event.target.value)}
+            />
+            <button className="ml-4" onClick={() => join()}>
+              決定
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
+        {!user ? <div className='flex justify-center items-center w-full'>
+          <Signin />
+          </div>
+             : ''}
       </div>
     </>
   );
