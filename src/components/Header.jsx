@@ -1,25 +1,33 @@
 import { signOut } from 'firebase/auth';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
+import { AiFillSetting } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../firebase';
+import { leaveEvent } from '../useFirestore';
 
 const Header = () => {
+  const { eventId } = useParams();
   const [user] = useAuthState(auth);
   const [userDropdown, setUserDropdown] = useState(false);
 
+  const navigate = useNavigate();
+
+  const leave = () => {
+    leaveEvent(user.uid, eventId);
+    navigate('/');
+  };
+
   return (
     <div className="h-12 w-full bg-slate-400 flex">
-      <div className="w-2/3 flex justify-start items-center">
+      <div className="w-2/3 flex justify-start items-center" onClick={() => navigate('/')}>
         <div className="m-2">レシート家計簿</div>
       </div>
       <div className="w-1/3 flex justify-end items-center">
         <div className="m-2">
           {user ? (
             <div>
-              <img
-                src={user.photoURL}
-                alt=""
+              <AiFillSetting
                 className="h-8 w-8 rounded-full cursor-pointer z-20"
                 onClick={() => {
                   setUserDropdown(!userDropdown);
@@ -37,21 +45,35 @@ const Header = () => {
                         className="py-2 text-sm text-gray-700 dark:text-gray-200"
                         aria-labelledby="dropdownInformationButton"
                       >
-                        {/* <li>
-                          <a
-                            href="#"
+                        <li>
+                          <div
                             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={() => navigate('/')}
                           >
-                            Dashboard
-                          </a>
-                        </li> */}
+                            ホームに戻る
+                          </div>
+                        </li>
+                        {eventId ? (
+                          <>
+                            <li>
+                              <div
+                                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => leave()}
+                              >
+                                グループから退出する
+                              </div>
+                            </li>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </ul>
                       <div className="py-2">
                         <button
                           onClick={() => signOut(auth)}
                           className="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
-                          Sign out
+                          ログアウト
                         </button>
                       </div>
                     </div>
