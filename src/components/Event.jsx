@@ -5,13 +5,12 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase';
 
-import { AiFillHome } from 'react-icons/ai';
-
 import { doc, getDoc } from 'firebase/firestore';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Camera from './Camera';
 
-import { getUser } from '../useFirestore';
+import { getUser, leaveEvent } from '../useFirestore';
+import Header from './Header';
 import ReceiptList from './ReceiptList';
 
 // イベントがある場合は、dbのrecentEventIdを該当のeventIDに書き換える
@@ -45,18 +44,19 @@ const Event = () => {
       return;
     }
   }, [eventId, eventState.host, user]);
-  // 最近のレシートの投稿が見れる
 
   return (
-    <div>
-      {!eventState ? (
-        <div>
-          イベントが見つかりませんでした。<Link to="/">ホームに戻る</Link>
-        </div>
-      ) : (
-        ''
-      )}
-      {/* {eventState && hostUser ? (
+    <>
+      <Header eventId={eventId} />
+      <div>
+        {!eventState ? (
+          <div>
+            イベントが見つかりませんでした。<Link to="/">ホームに戻る</Link>
+          </div>
+        ) : (
+          ''
+        )}
+        {/* {eventState && hostUser ? (
         <div>
           <div>ホストユーザー</div>
           <img src={hostUser.imageUrl} alt=""  className='rounded-full w-10 h-10'/>
@@ -64,18 +64,11 @@ const Event = () => {
       ) : (
         ''
       )} */}
-      <div className="p-5">
-        <div
-          className="flex items-center justify-center border border-l-neutral-500 rounded-md w-40 h-12"
-          onClick={() => navigate('/')}
-        >
-          <AiFillHome />
-          <div className="ml-2">ホームに戻る</div>
-        </div>
+
+        <Camera eventId={eventId} />
+        <ReceiptList eventId={eventId} />
       </div>
-      <Camera eventId={eventId} />
-      <ReceiptList eventId={eventId} />
-    </div>
+    </>
   );
 };
 
