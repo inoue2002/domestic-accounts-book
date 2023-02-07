@@ -33,7 +33,7 @@ export async function joinEvent(uid, eventId) {
   }
 }
 
-export async function removeEvent(uid, eventId) {
+export async function leaveEvent(uid, eventId) {
   try {
     const eventRef = doc(db, `/events/${eventId}`);
     await updateDoc(eventRef, {
