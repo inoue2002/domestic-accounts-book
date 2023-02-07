@@ -21,12 +21,11 @@ const Signin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-
-        // TODO - useFirestoreに移動する
+        
         // DBにユーザー情報が登録されているかどうか確認する
         const userDocumentRef = doc(db, 'users', user.uid);
         getDoc(userDocumentRef).then(async (documentSnapshot) => {
@@ -41,12 +40,12 @@ const Signin = () => {
       })
       .catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
+        // const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.customData.email;
+        // const email = error.customData.email;
         // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        // const credential = GoogleAuthProvider.credentialFromError(error);
         console.error({ errorMessage });
       });
   };

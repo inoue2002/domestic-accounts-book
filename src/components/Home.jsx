@@ -15,7 +15,6 @@ const Home = () => {
   const [userJoinEvent, setUserJoinEvent] = useState([]);
   const [inputEventId, setInputEventId] = useState('');
   useEffect(() => {
-    console.log('起動');
     if (!user) return;
     const userRef = doc(db, 'users', user.uid);
     getDoc(userRef).then((user) => {
@@ -38,7 +37,6 @@ const Home = () => {
   };
 
   const join = async () => {
-    console.log('イベントに参加します', inputEventId);
     // dbにイベントがあるか確認しに行く
     //　イベントがあった場合ユーザー情報のjoinEventにeventIDを追加
     // イベントのmemberにuserIdを追加

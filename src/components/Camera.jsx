@@ -5,7 +5,6 @@ import { storage } from '../firebase';
 import { addReceiptd } from '../useFirestore';
 
 const Camera = (props) => {
-  const [imageUrl, setImageUrl] = useState('');
   const eventId = props.eventId;
   const [preview, setPreview] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -43,8 +42,6 @@ const Camera = (props) => {
           console.log(snapshot.ref);
           // imageUrlを取得する
           await getDownloadURL(storageRef).then(async function (url) {
-            console.log(url);
-            setImageUrl(url);
             await addReceiptd(eventId, { imageUrl: url });
           });
           // itemをeventのDBに追加する
