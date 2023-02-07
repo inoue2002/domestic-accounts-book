@@ -47,8 +47,8 @@ const ReceiptList = (props) => {
       </div>
       <div className="p-5 flex justify-center flex-col items-center">
         {receiptList.map((receipt, index) => (
-          <div className="w-11/12 h-20 border border-l-neutral-500 flex justify-start items-center pl-3">
-            <img src={receipt.imageUrl} alt="" key={index} className="w-10 h-10" />
+          <div className="w-11/12 h-20 border border-l-neutral-500 flex justify-start items-center pl-3" key={index}>
+            <img src={receipt.imageUrl} alt="" className="w-10 h-10" />
           </div>
         ))}
       </div>
