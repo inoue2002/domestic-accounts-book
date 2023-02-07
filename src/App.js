@@ -21,8 +21,6 @@ const App = () =>{
 
   return (
     <div className="App">
-      <Header />
-      <Signin />
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
