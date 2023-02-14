@@ -4,8 +4,7 @@ import { storage } from '../firebase';
 // https://react-icons.github.io/react-icons/icons?name=ai
 import { addReceiptd } from '../useFirestore';
 
-const Camera = (props) => {
-  const eventId = props.eventId;
+const Camera = ({ eventId }) => {
   const [preview, setPreview] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadButtonText, setUploadbuttonText] = useState('アップロード');
@@ -76,8 +75,11 @@ const Camera = (props) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-10">
-      <div className="flex items-center justify-center w-full">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex justify-start w-full">
+        <div className="p-5 font-bold">レシート投稿</div>
+      </div>
+      <div className="flex items-center justify-center w-10/12">
         {preview !== undefined ? (
           <div className="relative">
             <img src={preview} alt="preview" className="h-64" />
@@ -120,7 +122,7 @@ const Camera = (props) => {
         )}
       </div>
       {/* <label>
-        <AiFillCamera className="w-20 h-20 border border-l-pink-700 rounded-full p-3" />
+        <AiFillCamera className="w-20 h-20 p-3 rounded-full first-letter:border border-l-pink-700" />
         <input type="file" onChange={handleImageSelect} style={{ display: 'none' }} />
       </label> */}
       <button

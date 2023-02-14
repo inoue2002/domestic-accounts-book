@@ -19,16 +19,16 @@ const Header = () => {
   };
 
   return (
-    <div className="h-12 w-full bg-slate-400 flex">
-      <div className="w-2/3 flex justify-start items-center" onClick={() => navigate('/')}>
+    <div className="w-full h-12 bg-slate-400 flex">
+      <div className="flex items-center justify-start w-2/3" onClick={() => navigate('/')}>
         <div className="m-2">レシート家計簿</div>
       </div>
-      <div className="w-1/3 flex justify-end items-center">
+      <div className="flex items-center justify-end w-1/3">
         <div className="m-2">
           {user ? (
             <div>
               <AiFillSetting
-                className="h-8 w-8 rounded-full cursor-pointer z-20"
+                className="z-20 w-8 h-8 rounded-full cursor-pointer"
                 onClick={() => {
                   setUserDropdown(!userDropdown);
                 }}

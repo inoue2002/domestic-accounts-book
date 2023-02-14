@@ -19,12 +19,12 @@ const ReceiptList = (props) => {
 
   return (
     <div className="flex flex-col justify-start">
-      <div className="flex w-full justify-start">
+      <div className="flex justify-start w-full">
         <div className="p-5 font-bold">レシートリスト</div>
       </div>
-      <div className="p-5 flex justify-center flex-col items-center">
+      <div className="flex flex-col items-center justify-center p-5">
         {receiptList.map((receipt, index) => (
-          <div className="w-11/12 h-20 border border-l-neutral-500 flex justify-start items-center pl-3" key={index}>
+          <div className="flex items-center justify-start w-11/12 h-20 pl-3 border border-l-neutral-500" key={index}>
             <img src={receipt.imageUrl} alt="" className="w-10 h-10" />
           </div>
         ))}

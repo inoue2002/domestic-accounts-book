@@ -59,8 +59,8 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col justify-start items-start">
-        {user && userJoinEvent.length !== 0 ? <div className="m-4 flex">参加している家計簿</div> : ''}
+      <div className="flex flex-col items-start justify-start">
+        {user && userJoinEvent.length !== 0 ? <div className="flex m-4">参加している家計簿</div> : ''}
         {user && !loading && userJoinEvent.length === 0 ? (
           <div className="m-6">まだ参加している家計簿はありません。新しく作るか、友達に招待してもらいましょう。</div>
         ) : (
@@ -78,13 +78,13 @@ const Home = () => {
           ''
         )}
         {user ? (
-          <div className="m-4 flex bg-red-400" onClick={() => newEvent()}>
+          <div className="flex m-4 bg-red-400" onClick={() => newEvent()}>
             新しい家計簿を作成
           </div>
         ) : (
           ''
         )}
-        {user ? <div className="m-4  flex">友達の家計簿に参加する</div> : ''}
+        {user ? <div className="flex m-4">友達の家計簿に参加する</div> : ''}
         {user ? (
           <div className="m-4">
             <input
@@ -100,10 +100,13 @@ const Home = () => {
         ) : (
           ''
         )}
-        {!user ? <div className='flex justify-center items-center w-full'>
-          <Signin />
+        {!user ? (
+          <div className="flex items-center justify-center w-full">
+            <Signin />
           </div>
-             : ''}
+        ) : (
+          ''
+        )}
       </div>
     </>
   );

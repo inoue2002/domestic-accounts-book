@@ -6,11 +6,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase';
 
 import { doc, getDoc } from 'firebase/firestore';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Camera from './Camera';
 
-import { getUser, leaveEvent } from '../useFirestore';
+import { getUser } from '../useFirestore';
 import Header from './Header';
+import Members from './Members';
 import ReceiptList from './ReceiptList';
 
 // イベントがある場合は、dbのrecentEventIdを該当のeventIDに書き換える
@@ -20,7 +21,6 @@ import ReceiptList from './ReceiptList';
 // イベントの削除（）
 
 const Event = () => {
-  const navigate = useNavigate();
   // カメラ
   const [user] = useAuthState(auth);
   const { eventId } = useParams();
@@ -59,12 +59,12 @@ const Event = () => {
         {/* {eventState && hostUser ? (
         <div>
           <div>ホストユーザー</div>
-          <img src={hostUser.imageUrl} alt=""  className='rounded-full w-10 h-10'/>
+          <img src={hostUser.imageUrl} alt=""  className='w-10 h-10 rounded-full'/>
         </div>
       ) : (
         ''
       )} */}
-
+        <Members eventId={eventId} eventState={eventState} />
         <Camera eventId={eventId} />
         <ReceiptList eventId={eventId} />
       </div>
